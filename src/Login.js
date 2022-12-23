@@ -31,6 +31,7 @@ export default function Login(){
             }).then(data=>{
                 console.log(data.token);
                 localStorage.setItem("token",data.token);
+                localStorage.setItem("isAdmin",data.isAdmin);
                 navigate('/main');
             }).catch(err=>{
                 console.log(err);
