@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect } from "react";
 import { useState } from 'react';
 import "./App.css";
+import axios from 'axios';
 import { API } from "./global";
 import { Button } from "@mui/material";
 import "./Pizza.css";
@@ -16,16 +17,22 @@ export default function Pizza() {
     .then((data)=>data.json())
     .then((p)=>setProducts (p));
   };
-   useEffect(()=> getProducts(),[]);
+  //useEffect(()=> getProducts(),[]);
 
-   const deleteproduct=(id)=>{
-  fetch(`${API}/pizzas/${id}`,{
-      method:'DELETE',
+  //  const deleteproduct=async(id)=>{
+  // await fetch(`${API}/pizzas/${id}`,{
+  //     method:'DELETE',
+  //     headers:{'x-auth-token':token},
+  // }).then((data)=>data.json())
+  // .then(()=>getProducts());
+  //  };
+
+   const deleteproduct= async(id)=>{
+    await axios.delete(`${API}/pizzas/${id}`,{
       headers:{'x-auth-token':token},
-  }).then((data)=>data.json())
-  .then(()=>getProducts());
-   };
-   
+    }).then(()=>getProducts());
+   }
+   useEffect(()=> getProducts(),[]);
    return (
     <div className="product-list-container">{products.map((p)=>(<Pizzas product ={p} deleteButton={<Button variant="contained" color="error" onClick={()=>deleteproduct(p._id)}><i className="material-icons">delete</i></Button>}/>))}</div>
  );
@@ -74,10 +81,11 @@ return(
     <div className="product-specs"><h2 className="product-name">{product.name}</h2>
     <p  className="product-price">{product.price}</p></div>
     <Button variant="contained" onClick={()=>setShow(!show)}>Description</Button>
-    {isAdmin?[deleteButton]:null}
+    {isAdmin?deleteButton:null}
     {show?<p className="product-summary">{product.summary}</p>:""}  
-    <Button  classname="center" color="secondary" type="submit" variant="contained" 
+    <Button  className="center" color="secondary" type="submit" variant="contained" 
     onClick={()=>displayRazorpay()}>BUY NOW</Button>
   </div>
 );
 }
+ 
