@@ -2,7 +2,6 @@ import React from 'react';
 import { useEffect } from "react";
 import { useState } from 'react';
 import "./App.css";
-import axios from 'axios';
 import { API } from "./global";
 import { Button } from "@mui/material";
 import "./Pizza.css";
@@ -17,22 +16,16 @@ export default function Pizza() {
     .then((data)=>data.json())
     .then((p)=>setProducts (p));
   };
-  //useEffect(()=> getProducts(),[]);
+  useEffect(()=> getProducts(),[]);
 
-  //  const deleteproduct=async(id)=>{
-  // await fetch(`${API}/pizzas/${id}`,{
-  //     method:'DELETE',
-  //     headers:{'x-auth-token':token},
-  // }).then((data)=>data.json())
-  // .then(()=>getProducts());
-  //  };
-
-   const deleteproduct= async(id)=>{
-    await axios.delete(`${API}/pizzas/${id}`,{
+   const deleteproduct=async(id)=>{
+  await fetch(`${API}/pizzas/${id}`,{
+      method:'DELETE',
       headers:{'x-auth-token':token},
-    }).then(()=>getProducts());
-   }
-   useEffect(()=> getProducts(),[]);
+  }).then((data)=>data.json())
+  .then(()=>getProducts());
+   };
+
    return (
     <div className="product-list-container">{products.map((p)=>(<Pizzas product ={p} deleteButton={<Button variant="contained" color="error" onClick={()=>deleteproduct(p._id)}><i className="material-icons">delete</i></Button>}/>))}</div>
  );
