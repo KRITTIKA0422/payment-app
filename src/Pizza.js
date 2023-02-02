@@ -49,7 +49,7 @@ function Pizzas({product,deleteButton}){
   };
 
   useEffect(()=>{
-    loadScript("http://checkout.razorpay.com/v1/checkout.js");
+    loadScript("https://checkout.razorpay.com/v1/checkout.js");
   });
   function displayRazorpay(){
     const options={
